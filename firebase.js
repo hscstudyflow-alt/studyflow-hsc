@@ -1,22 +1,14 @@
 // firebase.js
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-
-import { getAuth } from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import { getFirestore } from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
+  apiKey: "AIzaSyA8kLt1P-eLqvAjf0FyOVuQkjwl4TeOFgk",
+  authDomain: "studyflow-hsc.firebaseapp.com",
+  projectId: "studyflow-hsc",
+  appId: "1:810611305536:web:0324a8308d2515b62003a5",
+  measurementId: "G-12PRQSYGSP"
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
