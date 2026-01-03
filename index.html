@@ -1,143 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyFlow HSC – Login</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StudyFlow | Smart HSC Tracker</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
 
-    .card {
-      background: #020617;
-      width: 100%;
-      max-width: 380px;
-      padding: 20px;
-      border-radius: 12px;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #020617, #0f172a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #e5e7eb;
+}
 
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 14px;
-    }
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #020617;
+  padding: 30px 25px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
 
-    button {
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-    }
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .google {
-      background: #ea4335;
-    }
-  </style>
+.logo img {
+  width: 70px;
+}
+
+.logo h1 {
+  margin: 10px 0 5px;
+  font-size: 26px;
+}
+
+.logo p {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+input, button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+}
+
+input {
+  background: #0f172a;
+  color: #fff;
+}
+
+button {
+  background: #2563eb;
+  color: #fff;
+  font-weight: bold;
+}
+
+.google {
+  background: #ea4335;
+}
+
+.small {
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="card">
-  <h2 style="text-align:center">StudyFlow HSC</h2>
+  <div class="logo">
+    <img src="https://i.imgur.com/Z6a8k8D.png" />
+    <h1>StudyFlow</h1>
+    <p>Smart HSC Study Tracker</p>
+  </div>
 
-  <input type="email" id="email" placeholder="Email" />
+  <input type="email" id="email" placeholder="Email address" />
   <input type="password" id="password" placeholder="Password" />
 
-  <button onclick="emailSignup()">Sign Up</button>
-  <button onclick="emailLogin()">Login</button>
+  <button onclick="signup()">Create Account</button>
+  <button onclick="login()">Login</button>
 
-  <hr />
+  <p class="small">or</p>
 
   <button class="google" onclick="googleLogin()">Continue with Google</button>
-
-  <hr />
-
-  <input type="text" id="phone" placeholder="+8801XXXXXXXXX" />
-  <div id="recaptcha-container"></div>
-  <button onclick="sendOTP()">Send OTP</button>
-
-  <input type="text" id="otp" placeholder="Enter OTP" />
-  <button onclick="verifyOTP()">Verify OTP</button>
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import {
-    GoogleAuthProvider,
-    signInWithPopup,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    RecaptchaVerifier,
-    signInWithPhoneNumber
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "PASTE_YOUR_API_KEY",
-    authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-    projectId: "PASTE_YOUR_PROJECT_ID",
-    appId: "PASTE_YOUR_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyA8kLt1P-eLqvAjf0FyOVuQkjwl4TeOFgk",
+  authDomain: "studyflow-hsc.firebaseapp.com",
+  projectId: "studyflow-hsc",
+  storageBucket: "studyflow-hsc.firebasestorage.app",
+  messagingSenderId: "810611305536",
+  appId: "1:810611305536:web:0324a8308d2515b62003a5",
+  measurementId: "G-12PRQSYGSP"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  // ✅ already logged in → dashboard
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      window.location.href = "dashboard.html";
-    }
-  });
+// ✅ AUTO REDIRECT
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.location.href = "dashboard.html";
+  }
+});
 
-  window.googleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  };
-
-  window.emailSignup = async () => {
-    await createUserWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-  };
-
-  window.emailLogin = async () => {
-    await signInWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-  };
-
-  window.recaptchaVerifier = new RecaptchaVerifier(
-    "recaptcha-container",
-    { size: "normal" },
-    auth
+window.signup = async () => {
+  await createUserWithEmailAndPassword(
+    auth,
+    email.value,
+    password.value
   );
+};
 
-  window.sendOTP = async () => {
-    window.confirmationResult = await signInWithPhoneNumber(
-      auth,
-      phone.value,
-      window.recaptchaVerifier
-    );
-  };
+window.login = async () => {
+  await signInWithEmailAndPassword(
+    auth,
+    email.value,
+    password.value
+  );
+};
 
-  window.verifyOTP = async () => {
-    await window.confirmationResult.confirm(otp.value);
-  };
+window.googleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+  await signInWithPopup(auth, provider);
+};
 </script>
 
 </body>
