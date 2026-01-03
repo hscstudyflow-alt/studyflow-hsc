@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyFlow HSC Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    header {
+      padding: 16px;
+      text-align: center;
+      background: #020617;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: #020617;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      background: #020617cc;
+    }
+
+    .subject {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .papers {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 14px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    📚 StudyFlow HSC Dashboard
+  </header>
+
+  <div class="container">
+
+    <div class="card">
+      <div class="subject">Physics</div>
+      <div class="papers">1st Paper · 2nd Paper</div>
+    </div>
+
+    <div class="card">
+      <div class="subject">Chemistry</div>
+      <div class="papers">1st Paper · 2nd Paper</div>
+    </div>
+
+    <div class="card">
+      <div class="subject">Biology</div>
+      <div class="papers">1st Paper · 2nd Paper</div>
+    </div>
+
+    <div class="card">
+      <div class="subject">Higher Math</div>
+      <div class="papers">1st Paper · 2nd Paper</div>
+    </div>
+
+    <div class="card">
+      <div class="subject">Bangla</div>
+      <div class="papers">1st Paper · 2nd Paper</div>
+    </div>
+
+    <div class="card">
+      <div class="subject">English</div>
+      <div class="papers">1st Paper · 2nd Paper</div>
+    </div>
+
+    <div class="card" style="grid-column: span 2;">
+      <div class="subject">ICT</div>
+      <div class="papers">Single Paper</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Phase-2 · Subject & Paper Structure Ready
+  </div>
+
+</body>
+</html>
