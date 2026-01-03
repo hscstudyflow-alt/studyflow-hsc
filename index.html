@@ -1,42 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>StudyFlow HSC</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow HSC</title>
+
+  <!-- Basic styling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #020617;
+      width: 100%;
+      max-width: 380px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-google {
+      background: #ea4335;
+      color: white;
+    }
+
+    .btn-logout {
+      background: #374151;
+      color: white;
+    }
+
+    hr {
+      margin: 15px 0;
+      border: 0;
+      border-top: 1px solid #334155;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
-<h2>StudyFlow HSC Login</h2>
 
-<input type="email" id="email" placeholder="Email" />
-<input type="password" id="password" placeholder="Password" />
+  <div class="card">
+    <h2>StudyFlow HSC</h2>
 
-<button onclick="emailSignup()">Sign Up</button>
-<button onclick="emailLogin()">Login</button>
+    <!-- Email / Password -->
+    <input type="email" id="email" placeholder="Email address" />
+    <input type="password" id="password" placeholder="Password" />
 
-<hr />
+    <button class="btn-primary" onclick="emailSignup()">Sign Up</button>
+    <button class="btn-primary" onclick="emailLogin()">Login</button>
 
-<button onclick="googleLogin()">Login with Google</button>
-<button onclick="logout()">Logout</button>
+    <hr />
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="auth.js"></script>
-<h2>StudyFlow HSC</h2>
+    <!-- Google Login -->
+    <button class="btn-google" onclick="googleLogin()">
+      Continue with Google
+    </button>
 
-<button id="googleBtn">Login with Google</button>
+    <hr />
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button id="emailBtn">Email Login</button>
+    <!-- Logout -->
+    <button class="btn-logout" onclick="logout()">Logout</button>
 
-<input id="phone" placeholder="+8801XXXXXXXXX">
-<button id="phoneBtn">Send OTP</button>
-<input id="otp" placeholder="OTP">
-<button id="otpBtn">Verify OTP</button>
+    <div class="note">
+      Phase-1 · Secure Login System
+    </div>
+  </div>
 
-<div id="recaptcha"></div>
+  <!-- Firebase scripts -->
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="auth.js"></script>
 
-<script type="module" src="auth.js"></script>
 </body>
 </html>
