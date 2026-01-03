@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StudyFlow HSC Dashboard</title>
+  <title>StudyFlow HSC – Tracker</title>
 
   <style>
     body {
@@ -14,47 +14,50 @@
     }
 
     header {
-      padding: 16px;
+      padding: 14px;
       text-align: center;
       background: #020617;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
     }
 
     .container {
-      padding: 16px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      padding: 14px;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .card {
       background: #020617;
       border-radius: 12px;
-      padding: 18px;
-      text-align: center;
+      padding: 14px;
+      margin-top: 14px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      cursor: pointer;
     }
 
-    .card:hover {
-      background: #020617cc;
-    }
-
-    .subject {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .papers {
-      font-size: 13px;
-      opacity: 0.7;
+    .summary {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
     .footer {
       text-align: center;
-      padding: 14px;
+      padding: 12px;
       font-size: 12px;
       opacity: 0.6;
     }
@@ -63,52 +66,116 @@
 
 <body>
 
-  <header>
-    📚 StudyFlow HSC Dashboard
-  </header>
+<header>
+  ⏱️ StudyFlow HSC – Daily Tracker
+</header>
 
-  <div class="container">
+<div class="container">
 
-    <div class="card">
-      <div class="subject">Physics</div>
-      <div class="papers">1st Paper · 2nd Paper</div>
+  <!-- Day -->
+  <input type="text" id="day" placeholder="Day (e.g. Day 1)" />
+
+  <!-- Subject -->
+  <select id="subject">
+    <option value="">Select Subject</option>
+    <option>Physics</option>
+    <option>Chemistry</option>
+    <option>Biology</option>
+    <option>Higher Math</option>
+    <option>Bangla</option>
+    <option>English</option>
+    <option>ICT</option>
+  </select>
+
+  <!-- Paper -->
+  <select id="paper">
+    <option value="">Select Paper</option>
+    <option>1st Paper</option>
+    <option>2nd Paper</option>
+    <option>Single Paper</option>
+  </select>
+
+  <!-- Hours -->
+  <input type="number" id="hours" placeholder="Study hours (e.g. 2)" />
+
+  <button onclick="addStudy()">Add Study Hour</button>
+
+  <div class="card">
+    <strong>Today Summary</strong>
+    <div class="summary" id="summary">
+      No data yet.
     </div>
-
-    <div class="card">
-      <div class="subject">Chemistry</div>
-      <div class="papers">1st Paper · 2nd Paper</div>
-    </div>
-
-    <div class="card">
-      <div class="subject">Biology</div>
-      <div class="papers">1st Paper · 2nd Paper</div>
-    </div>
-
-    <div class="card">
-      <div class="subject">Higher Math</div>
-      <div class="papers">1st Paper · 2nd Paper</div>
-    </div>
-
-    <div class="card">
-      <div class="subject">Bangla</div>
-      <div class="papers">1st Paper · 2nd Paper</div>
-    </div>
-
-    <div class="card">
-      <div class="subject">English</div>
-      <div class="papers">1st Paper · 2nd Paper</div>
-    </div>
-
-    <div class="card" style="grid-column: span 2;">
-      <div class="subject">ICT</div>
-      <div class="papers">Single Paper</div>
-    </div>
-
   </div>
 
-  <div class="footer">
-    Phase-2 · Subject & Paper Structure Ready
-  </div>
+</div>
+
+<div class="footer">
+  Phase-2 · Day-wise Study Tracking (Bug-Free)
+</div>
+
+<!-- Firebase + Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // 🔐 Firebase config (SAME as firebase.js)
+  const firebaseConfig = {
+  apiKey: "AIzaSyA8kLt1P-eLqvAjf0FyOVuQkjwl4TeOFgk",
+  authDomain: "studyflow-hsc.firebaseapp.com",
+  projectId: "studyflow-hsc",
+  storageBucket: "studyflow-hsc.firebasestorage.app",
+  messagingSenderId: "810611305536",
+  appId: "1:810611305536:web:0324a8308d2515b62003a5",
+  measurementId: "G-12PRQSYGSP"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+    } else {
+      window.location.href = "index.html";
+    }
+  });
+
+  window.addStudy = async () => {
+    const day = document.getElementById("day").value;
+    const subject = document.getElementById("subject").value;
+    const paper = document.getElementById("paper").value;
+    const hours = Number(document.getElementById("hours").value);
+
+    if (!day || !subject || !paper || !hours) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const ref = doc(db, "study", currentUser.uid);
+    const snap = await getDoc(ref);
+
+    let data = snap.exists() ? snap.data() : {};
+    data[day] = data[day] || {};
+    data[day][`${subject} - ${paper}`] =
+      (data[day][`${subject} - ${paper}`] || 0) + hours;
+
+    await setDoc(ref, data);
+
+    document.getElementById("summary").innerText =
+      `${day}\n${subject} (${paper}) → ${data[day][`${subject} - ${paper}`]} hour(s)`;
+
+    document.getElementById("hours").value = "";
+  };
+</script>
 
 </body>
 </html>
