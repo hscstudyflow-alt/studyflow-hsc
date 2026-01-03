@@ -6,84 +6,22 @@
 <title>StudyFlow | Smart HSC Tracker</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #020617, #0f172a);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #e5e7eb;
-}
-
-.card {
-  width: 100%;
-  max-width: 420px;
-  background: #020617;
-  padding: 30px 25px;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-}
-
-.logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.logo img {
-  width: 70px;
-}
-
-.logo h1 {
-  margin: 10px 0 5px;
-  font-size: 26px;
-}
-
-.logo p {
-  font-size: 13px;
-  color: #94a3b8;
-}
-
-input, button {
-  width: 100%;
-  padding: 13px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
-}
-
-input {
-  background: #0f172a;
-  color: #fff;
-}
-
-button {
-  background: #2563eb;
-  color: #fff;
-  font-weight: bold;
-}
-
-.google {
-  background: #ea4335;
-}
-
-.small {
-  text-align: center;
-  font-size: 12px;
-  color: #94a3b8;
-  margin-top: 10px;
-}
+* { box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+body { margin:0; min-height:100vh; background: linear-gradient(135deg,#020617,#0f172a); display:flex; justify-content:center; align-items:center; color:#e5e7eb; }
+.card { width:100%; max-width:420px; background:#020617; padding:30px 25px; border-radius:16px; box-shadow:0 20px 40px rgba(0,0,0,0.6);}
+.logo { text-align:center; margin-bottom:20px;}
+.logo img { width:70px; }
+.logo h1 { margin:10px 0 5px; font-size:26px; }
+.logo p { font-size:13px; color:#94a3b8; }
+input, button { width:100%; padding:13px; margin-top:10px; border-radius:10px; border:none; font-size:14px; }
+input { background:#0f172a; color:#fff;}
+button { background:#2563eb; color:#fff; font-weight:bold; }
+.google { background:#ea4335; }
+.small { text-align:center; font-size:12px; color:#94a3b8; margin-top:10px;}
 </style>
 </head>
 
 <body>
-
 <div class="card">
   <div class="logo">
     <img src="https://i.imgur.com/Z6a8k8D.png" />
@@ -104,14 +42,7 @@ button {
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA8kLt1P-eLqvAjf0FyOVuQkjwl4TeOFgk",
@@ -126,27 +57,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// ✅ AUTO REDIRECT
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.location.href = "dashboard.html";
-  }
+// Auto redirect if already logged in
+onAuthStateChanged(auth, user => {
+  if(user) window.location.href = "dashboard.html";
 });
 
 window.signup = async () => {
-  await createUserWithEmailAndPassword(
-    auth,
-    email.value,
-    password.value
-  );
+  if(!email.value || !password.value){ alert("Fill email & password"); return; }
+  await createUserWithEmailAndPassword(auth,email.value,password.value);
 };
 
 window.login = async () => {
-  await signInWithEmailAndPassword(
-    auth,
-    email.value,
-    password.value
-  );
+  if(!email.value || !password.value){ alert("Fill email & password"); return; }
+  await signInWithEmailAndPassword(auth,email.value,password.value);
 };
 
 window.googleLogin = async () => {
