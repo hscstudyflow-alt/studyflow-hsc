@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyFlow HSC</title>
+  <title>StudyFlow HSC – Login</title>
 
   <style>
     body {
@@ -23,102 +23,122 @@
       max-width: 380px;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    input {
+    input, button {
       width: 100%;
       padding: 12px;
       margin-bottom: 10px;
       border-radius: 8px;
       border: none;
-      outline: none;
       font-size: 14px;
     }
 
     button {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
-      border: none;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn-primary {
       background: #2563eb;
       color: white;
+      font-weight: bold;
     }
 
-    .btn-google {
+    .google {
       background: #ea4335;
-      color: white;
-    }
-
-    .btn-logout {
-      background: #374151;
-      color: white;
-    }
-
-    hr {
-      margin: 12px 0;
-      border: 0;
-      border-top: 1px solid #334155;
-    }
-
-    .note {
-      text-align: center;
-      font-size: 12px;
-      opacity: 0.7;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h2>StudyFlow HSC</h2>
+<div class="card">
+  <h2 style="text-align:center">StudyFlow HSC</h2>
 
-    <!-- Email Login -->
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
 
-    <button class="btn-primary" onclick="emailSignup()">Sign Up</button>
-    <button class="btn-primary" onclick="emailLogin()">Login</button>
+  <button onclick="emailSignup()">Sign Up</button>
+  <button onclick="emailLogin()">Login</button>
 
-    <hr />
+  <hr />
 
-    <!-- Google Login -->
-    <button class="btn-google" onclick="googleLogin()">Continue with Google</button>
+  <button class="google" onclick="googleLogin()">Continue with Google</button>
 
-    <hr />
+  <hr />
 
-    <!-- Phone OTP -->
-    <input type="text" id="phone" placeholder="+8801XXXXXXXXX" />
-    <div id="recaptcha-container"></div>
-    <button class="btn-primary" onclick="sendOTP()">Send OTP</button>
+  <input type="text" id="phone" placeholder="+8801XXXXXXXXX" />
+  <div id="recaptcha-container"></div>
+  <button onclick="sendOTP()">Send OTP</button>
 
-    <input type="text" id="otp" placeholder="Enter OTP" />
-    <button class="btn-primary" onclick="verifyOTP()">Verify OTP</button>
+  <input type="text" id="otp" placeholder="Enter OTP" />
+  <button onclick="verifyOTP()">Verify OTP</button>
+</div>
 
-    <hr />
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    GoogleAuthProvider,
+    signInWithPopup,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    RecaptchaVerifier,
+    signInWithPhoneNumber
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    <button class="btn-logout" onclick="logout()">Logout</button>
+  const firebaseConfig = {
+    apiKey: "PASTE_YOUR_API_KEY",
+    authDomain: "PASTE_YOUR_AUTH_DOMAIN",
+    projectId: "PASTE_YOUR_PROJECT_ID",
+    appId: "PASTE_YOUR_APP_ID"
+  };
 
-    <div class="note">
-      Phase-1 · Secure Login + OTP
-    </div>
-  </div>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-  <script type="module" src="firebase.js"></script>
-  <script type="module" src="auth.js"></script>
+  // ✅ already logged in → dashboard
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.location.href = "dashboard.html";
+    }
+  });
+
+  window.googleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
+
+  window.emailSignup = async () => {
+    await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+  };
+
+  window.emailLogin = async () => {
+    await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+  };
+
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    { size: "normal" },
+    auth
+  );
+
+  window.sendOTP = async () => {
+    window.confirmationResult = await signInWithPhoneNumber(
+      auth,
+      phone.value,
+      window.recaptchaVerifier
+    );
+  };
+
+  window.verifyOTP = async () => {
+    await window.confirmationResult.confirm(otp.value);
+  };
+</script>
 
 </body>
 </html>
