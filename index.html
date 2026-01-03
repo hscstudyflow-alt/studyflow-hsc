@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StudyFlow HSC</title>
 
-  <!-- Basic styling -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,26 +28,26 @@
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     input {
       width: 100%;
       padding: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       border-radius: 8px;
       border: none;
       outline: none;
-      font-size: 15px;
+      font-size: 14px;
     }
 
     button {
       width: 100%;
       padding: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       border-radius: 8px;
       border: none;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -69,16 +68,15 @@
     }
 
     hr {
-      margin: 15px 0;
+      margin: 12px 0;
       border: 0;
       border-top: 1px solid #334155;
     }
 
     .note {
       text-align: center;
-      font-size: 13px;
+      font-size: 12px;
       opacity: 0.7;
-      margin-top: 10px;
     }
   </style>
 </head>
@@ -88,8 +86,8 @@
   <div class="card">
     <h2>StudyFlow HSC</h2>
 
-    <!-- Email / Password -->
-    <input type="email" id="email" placeholder="Email address" />
+    <!-- Email Login -->
+    <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
 
     <button class="btn-primary" onclick="emailSignup()">Sign Up</button>
@@ -98,21 +96,27 @@
     <hr />
 
     <!-- Google Login -->
-    <button class="btn-google" onclick="googleLogin()">
-      Continue with Google
-    </button>
+    <button class="btn-google" onclick="googleLogin()">Continue with Google</button>
 
     <hr />
 
-    <!-- Logout -->
+    <!-- Phone OTP -->
+    <input type="text" id="phone" placeholder="+8801XXXXXXXXX" />
+    <div id="recaptcha-container"></div>
+    <button class="btn-primary" onclick="sendOTP()">Send OTP</button>
+
+    <input type="text" id="otp" placeholder="Enter OTP" />
+    <button class="btn-primary" onclick="verifyOTP()">Verify OTP</button>
+
+    <hr />
+
     <button class="btn-logout" onclick="logout()">Logout</button>
 
     <div class="note">
-      Phase-1 · Secure Login System
+      Phase-1 · Secure Login + OTP
     </div>
   </div>
 
-  <!-- Firebase scripts -->
   <script type="module" src="firebase.js"></script>
   <script type="module" src="auth.js"></script>
 
