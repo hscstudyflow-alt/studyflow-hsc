@@ -1,48 +1,38 @@
+// auth.js
 import { auth } from "./firebase.js";
 import {
- GoogleAuthProvider,
- signInWithPopup,
- signInWithEmailAndPassword,
- RecaptchaVerifier,
- signInWithPhoneNumber
-} from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// Google
-document.getElementById("googleBtn").onclick = async () => {
- const provider = new GoogleAuthProvider();
- await signInWithPopup(auth, provider);
- alert("Google Login Success");
+// Google Login
+window.googleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+  await signInWithPopup(auth, provider);
+  alert("Google Login Successful");
 };
 
-// Email
-document.getElementById("emailBtn").onclick = async () => {
- await signInWithEmailAndPassword(
-  auth,
-  email.value,
-  password.value
- );
- alert("Email Login Success");
+// Email Signup
+window.emailSignup = async () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+  await createUserWithEmailAndPassword(auth, email, pass);
+  alert("Signup Successful");
 };
 
-// Phone OTP
-window.recaptchaVerifier = new RecaptchaVerifier(
- "recaptcha",
- { size: "invisible" },
- auth
-);
-
-document.getElementById("phoneBtn").onclick = async () => {
- window.confirmationResult =
- await signInWithPhoneNumber(
-  auth,
-  phone.value,
-  window.recaptchaVerifier
- );
- alert("OTP Sent");
+// Email Login
+window.emailLogin = async () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+  await signInWithEmailAndPassword(auth, email, pass);
+  alert("Login Successful");
 };
 
-document.getElementById("otpBtn").onclick = async () => {
- await window.confirmationResult.confirm(otp.value);
- alert("Phone Login Success");
+// Logout
+window.logout = async () => {
+  await signOut(auth);
+  alert("Logged Out");
 };
